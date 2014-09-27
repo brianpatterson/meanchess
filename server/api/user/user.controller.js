@@ -21,6 +21,18 @@ exports.index = function(req, res) {
 };
 
 /**
+ *Get a user by
+ *email.
+ */
+exports.getUserByEmail = function(req, res, next) {
+  User.findOne({email: req.query.email}, function (err, user) {
+    if(err) return next(err);
+    if(!user) { return res.send(401); }
+    return res.json(200, user);
+  });
+};
+
+/**
  * Creates a new user
  */
 exports.create = function (req, res, next) {

@@ -1,0 +1,33 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="col-md-12">
+  <div ng-repeat="challenge in challenges">
+    {{challenge}} cancelled your request.
+  </div>
+  <div ng-repeat="challenge in challenges">
+    {{challenge}}
+  </div>
+  <div>
+    Current Games
+  </div>
+  <div>
+    <div>
+      {{challengeMessage}}
+    </div>
+    <form class="form" name="form" ng-submit="challenge(form)" novalidate>
+
+        <div class="form-group">
+          <label>Email of adversary: </label>
+
+          <input type="text" class="form-control" ng-model="form.email" required>
+        </div>
+
+        <div>
+          <button class="btn btn-inverse btn-lg" type="submit">
+            Challenge
+          </button>
+        </div>
+
+      </form>
+  </div>
+</div>
