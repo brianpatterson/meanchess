@@ -1,15 +1,48 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="col-md-12">
-  <div ng-repeat="cancelledChallenge in cancelledChallenges">
-    {{cancelledChallenge}} cancelled your request.
-  </div>
-  <div ng-repeat="newChallenge in newChallenges">
-    {{newChallenge}}
-  </div>
-  <div>
-    Current Games
-  </div>
+  <table ng-show="cancelledChallenges" class="table-bordered">
+    <th>
+      Cancelled Requests
+    </th>
+    <tr ng-repeat="cancelledChallenge in cancelledChallenges">
+      <td>
+        {{cancelledChallenge.adversary.name}} cancelled your request.
+      </td>
+      <td>
+        <button type="button" class="close" ng-click="deleteChallenge(cancelledChallenge)">&times;</button>
+      </td>
+    </tr>
+  </table>
+  <br/>
+  <table ng-show="newChallenges" class="table-hover">
+    <th>
+      New Challenges
+    </th>
+    <tr ng-repeat="newChallenge in newChallenges">
+      <td>
+        {{newChallenge.challenger.name}} wants to play!
+      </td>
+      <td>
+        x
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <table ng-show="games" class="table-hover">
+    <th>
+      Current Games
+    </th>
+    <tr ng-repeat="game in games">
+      <td>
+        {{newChallenge.challenger.name}} wants to play!
+      </td>
+      <td>
+        x
+      </td>
+    </tr>
+  </table>
   <div>
     <div>
       {{challengeMessage}}

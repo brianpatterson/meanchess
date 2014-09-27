@@ -8,6 +8,24 @@ angular.module('3dchessApp')
 
     $scope.curUser = Auth.getCurrentUser();
 
+    $http.get('/api/challenges/new', {
+      params: {
+        adversary: $scope.curUser._id
+      }
+    }).success(function(newChallenges) {
+      $scope.newChallenges = newChallenges;
+      socket.syncUpdates('challenge', $scope.newChallenges);
+    });
+
+    $http.get('/api/challenges/cancelled',{
+      params: {
+        challenger: $scope.curUser._id
+      }
+    }).success(function(cancelledChallenges) {
+      $scope.cancelledChallenges = cancelledChallenges;
+      socket.syncUpdates('challenge', $scope.cancelledChallenges);
+    });
+
     $scope.challenge = function(form) {
       $scope.submitted = true;
       if(form.$valid) {
@@ -29,31 +47,12 @@ angular.module('3dchessApp')
       }
     };
 
-    $http.get('/api/challenges/new', {
-      params: {
-        adversary: $scope.curUser._id
-      }
-    }).success(function(newChallenges) {
-      $scope.newChallenges = newChallenges;
-      socket.syncUpdates('challenges', $scope.newChallenges);
-    });
+    $scope.deleteChallenge = function(challenge) {
+      $http.delete('/api/challenges/' + challenge._id);
+    };
 
-    $http.get('/api/challenges/cancelled',{
-      params: {
-        challenger: $scope.curUser._id
-      }
-    }).success(function(cancelledChallenges) {
-      $scope.cancelledChallenges = cancelledChallenges;
-      socket.syncUpdates('challenges', $scope.newChallenges);
+    $scope.$on('$destroy', function(){
+      socket.unsyncUpdates('challenge');
     });
-
   });
-
-  // $scope.addThing = function() {
-  //   if($scope.newThing === '') {
-  //     return;
-  //   }
-  //   $http.post('/api/things', { name: $scope.newThing });
-  //   $scope.newThing = '';
-  // };
 
