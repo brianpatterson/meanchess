@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 var ChallengeSchema = new Schema({
   challenger: String,
   adversary: String,
-  active: String,
+  status: String
 });
 
 module.exports = mongoose.model('Challenge', ChallengeSchema);

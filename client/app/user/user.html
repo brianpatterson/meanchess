@@ -1,11 +1,11 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="col-md-12">
-  <div ng-repeat="challenge in challenges">
-    {{challenge}} cancelled your request.
+  <div ng-repeat="cancelledChallenge in cancelledChallenges">
+    {{cancelledChallenge}} cancelled your request.
   </div>
-  <div ng-repeat="challenge in challenges">
-    {{challenge}}
+  <div ng-repeat="newChallenge in newChallenges">
+    {{newChallenge}}
   </div>
   <div>
     Current Games

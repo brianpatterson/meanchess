@@ -6,7 +6,7 @@ angular.module('3dchessApp')
       $location.path('/');
     }
 
-    $scope.challenger = Auth.getCurrentUser();
+    $scope.curUser = Auth.getCurrentUser();
 
     $scope.challenge = function(form) {
       $scope.submitted = true;
@@ -17,9 +17,9 @@ angular.module('3dchessApp')
           }
         }).success(function(data) {
           $http.post('api/challenges', {
-            challenger: $scope.challenger._id,
+            challenger: $scope.curUser._id,
             adversary: data._id,
-            active: 'pending'
+            status: 'pending'
           }).success(function() {
             $scope.challengeMessage = 'Your challenge to '+ data.name + ' has been sent!';
           });
@@ -29,10 +29,24 @@ angular.module('3dchessApp')
       }
     };
 
-    $http.get('/api/challenges').success(function(challenges) {
-      $scope.challenges = challenges;
-      socket.syncUpdates('challenges', $scope.challenges);
+    $http.get('/api/challenges/new', {
+      params: {
+        adversary: $scope.curUser._id
+      }
+    }).success(function(newChallenges) {
+      $scope.newChallenges = newChallenges;
+      socket.syncUpdates('challenges', $scope.newChallenges);
     });
+
+    $http.get('/api/challenges/cancelled',{
+      params: {
+        challenger: $scope.curUser._id
+      }
+    }).success(function(cancelledChallenges) {
+      $scope.cancelledChallenges = cancelledChallenges;
+      socket.syncUpdates('challenges', $scope.newChallenges);
+    });
+
   });
 
   // $scope.addThing = function() {

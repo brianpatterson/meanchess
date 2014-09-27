@@ -11,6 +11,22 @@ exports.index = function(req, res) {
   });
 };
 
+//Get a list of challenges that are pending for that user
+exports.newChallenges = function(req, res) {
+  Challenge.find({status: 'pending', adversary: req.query.adversary }, function (err, challenges) {
+    if(err) return handleError(res,err);
+    return res.json(200, challenges);
+  });
+};
+
+//Get a list of challenges that are cancelled for that user
+exports.cancelledChallenges = function(req, res) {
+  Challenge.find({status: 'cancelled', challenger: req.query.challenger}, function (err, challenges) {
+    if(err) return handleError(res,err);
+    return res.json(200, challenges);
+  });
+};
+
 // Get a single challenge
 exports.show = function(req, res) {
   Challenge.findById(req.params.id, function (err, challenge) {
