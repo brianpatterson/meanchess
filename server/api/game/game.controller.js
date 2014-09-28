@@ -2,12 +2,24 @@
 
 var _ = require('lodash');
 var Game = require('./game.model');
+var User = require('../user/user.model');
 
 // Get list of games
 exports.index = function(req, res) {
   Game.find(function (err, games) {
     if(err) { return handleError(res, err); }
     return res.json(200, games);
+  });
+};
+
+// List all of the games that match my userID
+exports.myGames = function(req, res) {
+  Game.find({$or: [{white: req.query.me},{black: req.query.me}]},function (err, games) {
+    User.populate(games, [{path: 'white', select: 'name'}, {path: 'black', select: 'name'}])
+    .then(function(){
+      if(err) { return handleError(res, err); }
+      return res.json(200, games);
+    });
   });
 };
 

@@ -16,7 +16,7 @@ angular.module('3dchessApp')
         })
         .then( function() {
           // Account created, redirect to home
-          $location.path('/');
+          $location.path('/user');
         })
         .catch( function(err) {
           err = err.data;

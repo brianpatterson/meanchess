@@ -1,7 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="col-md-12">
-  <table ng-show="cancelledChallenges" class="table-bordered">
+  <table ng-show="cancelledChallenges" class="table-hover">
     <th>
       Cancelled Requests
     </th>
@@ -24,22 +24,34 @@
         {{newChallenge.challenger.name}} wants to play!
       </td>
       <td>
-        x
+        <button type="button" ng-click="createGame(curUser,newChallenge.challenger._id)">
+          white
+        </button>
+      </td>
+      <td>
+        <button type="button" ng-click="createGame(newChallenge.challenger._id, curUser)">
+          black
+        </button>
+      </td>
+      <td>
+        <button type="button" class="close" ng-click="cancelChallenge(newChallenge)">&times;</button>
       </td>
     </tr>
   </table>
   <br/>
 
-  <table ng-show="games" class="table-hover">
+  <table ng-show="myGames" class="table-hover">
     <th>
       Current Games
     </th>
-    <tr ng-repeat="game in games">
+    <tr ng-repeat="game in myGames">
       <td>
-        {{newChallenge.challenger.name}} wants to play!
+        {{game}} It could be your turn.
       </td>
       <td>
-        x
+        <button type="button" ng-click="goToGame(game._id)">
+          Play
+        </button>
       </td>
     </tr>
   </table>
