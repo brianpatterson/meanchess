@@ -61,6 +61,22 @@ angular.module('3dchessApp')
         });
       },
 
+      syncModelUpdates: function (modelName, $scope, cb) {
+        cb = cb || angular.noop;
+
+        socket.on(modelName + ':save', function (item) {
+          // Return if the ids dont match up
+          if(item._id !== $scope[modelName]._id){
+            return;
+          }
+          // Update the scope
+          $scope.modelName = item;
+
+          cb(item);
+          
+        });
+      },
+
       /**
        * Removes listeners for a models updates on the socket
        *

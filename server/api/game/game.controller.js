@@ -33,14 +33,26 @@ exports.show = function(req, res) {
   });
 };
 
-// var chess = new ch.Chess(game.fenstring);
+// Get a single game
+exports.gameValidate = function(req, res) {
+  Game.findById(req.params.id, function (err, game) {
+    if(err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
 
-// if(chess.game_over() ||
-//   (game.black !== req.query.me && game.white !== req.query.me) ||
-//   (chess.turn() === 'w' && game.black === req.query.me) ||
-//   (chess.turn() === 'b' && game.white === req.query.me)) {
-//   return false;
-// }
+    var chess = new ch.Chess(game.fenstring);
+
+    if(chess.game_over() ||
+      (game.black !== req.query.me && game.white !== req.query.me) ||
+      (chess.turn() === 'w' && game.black === req.query.me) ||
+      (chess.turn() === 'b' && game.white === req.query.me)) {
+      return false;
+    }
+    
+    return res.json(game);
+  });
+};
+
+
 
 // Creates a new game in the DB.
 exports.create = function(req, res) {
