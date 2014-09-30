@@ -18,3 +18,7 @@ describe('GET /api/games', function() {
       });
   });
 });
+
+describe('UPDATE', function() {
+  it("")
+});

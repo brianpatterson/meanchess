@@ -8,6 +8,7 @@ angular.module('3dchessApp')
 
     $scope.curUser = Auth.getCurrentUser()._id;
 
+    //Lists pending challenges
     $http.get('/api/challenges/new', {
       params: {
         adversary: $scope.curUser
@@ -17,6 +18,7 @@ angular.module('3dchessApp')
       socket.syncUpdates('challenge', $scope.newChallenges);
     });
 
+    //Lists your rejected challenges
     $http.get('/api/challenges/cancelled',{
       params: {
         challenger: $scope.curUser
@@ -26,6 +28,10 @@ angular.module('3dchessApp')
       socket.syncUpdates('challenge', $scope.cancelledChallenges);
     });
 
+    //Lists current games
+    //TODO:
+    //Needs to delete/hide the game when you finish
+    //Also needs to display your opponent's name
     $http.get('/api/games/me',{
       params: {
         me: $scope.curUser
@@ -64,14 +70,23 @@ angular.module('3dchessApp')
       socket.unsyncUpdates('challenge');
     });
 
-    $scope.createGame = function(white, black){
+// ----------------------------------------------
+// You need to modify the createGame function to 
+// Redirect you to the game's ID
+// Start by console.logging the result of the post
+// request to see if you can find the game info.
+// ----------------------------------------------
+
+    $scope.createGame = function(white, black, challenge){
       $http.post('api/games', {
         white: white,
         black: black
-      }).then(function(){
-        $location.path('/game');
+      }).then(function(res){
+        $location.path('/game/' + res.data._id);
       }).catch(function(err){
         console.log(err.data);
+      }).then(function(){
+        $http.delete('/api/challenges/' + challenge._id);
       });
     };
 

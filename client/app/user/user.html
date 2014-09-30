@@ -24,12 +24,12 @@
         {{newChallenge.challenger.name}} wants to play!
       </td>
       <td>
-        <button type="button" ng-click="createGame(curUser,newChallenge.challenger._id)">
+        <button type="button" ng-click="createGame(curUser,newChallenge.challenger._id, newChallenge)">
           white
         </button>
       </td>
       <td>
-        <button type="button" ng-click="createGame(newChallenge.challenger._id, curUser)">
+        <button type="button" ng-click="createGame(newChallenge.challenger._id, curUser, newChallenge)">
           black
         </button>
       </td>
@@ -45,8 +45,11 @@
       Current Games
     </th>
     <tr ng-repeat="game in myGames">
-      <td>
-        {{game}} It could be your turn.
+      <td ng-if="game.white._id == curUser">
+        {{game.black.name}} is your opponent!
+      </td>
+      <td ng-if="game.black._id == curUser">
+        {{game.white.name}} is your opponent!
       </td>
       <td>
         <button type="button" ng-click="goToGame(game._id)">
