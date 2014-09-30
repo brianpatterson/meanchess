@@ -16,42 +16,37 @@ angular.module('3dchessApp')
     });
 
     $scope.buildBoard = function(game){
-      // var onDragStart = function(source, piece, position, orientation){
-      //   //TODO: Validate to make sure the person whose turn
-      //   //it is is the only person who can play.
-      //   //This includes validating that people who aren't
-      //   //members of this game can't play, and that
-      //   //the black user can't move the white user's pieces.
-      //   $http.get('/api/games/valid/'+ $scope.gameId, {
-      //     params: {
-      //       me: $scope.curUser
-      //     }
-      //   }).then(function(){
+      var onDragStart = function(source, piece, position, orientation){
+        //TODO: Validate to make sure the person whose turn
+        //it is is the only person who can play.
+        //This includes validating that people who aren't
+        //members of this game can't play, and that
+        //the black user can't move the white user's pieces.
+        var chess = new Chess(game.fenstring);
 
-      //   }).catch(function(){
-
-      //   });
-      // };
+        if(chess.game_over() ||
+          (game.black !== $scope.curUser && game.white !== $scope.curUser) ||
+          (chess.turn() === 'w' && piece.search(/^b/) !== -1) ||
+          (chess.turn() === 'b' && piece.search(/^w/) !== -1) || 
+          (chess.turn() === 'w' && game.black === $scope.curUser) ||
+          (chess.turn() === 'b' && game.white === $scope.curUser)){
+          return false;
+        }
+      };
 
       var onDrop = function(source, target){
         $http.put('/api/games/' + $scope.gameId, {source: source, target: target})
         .catch(function(err){
           console.log('Something went wrong: ', err);
         })
-        .then(function(res){
-          cfg.position = res.data.fenstring;
-          if($scope.curUser === game.black){
-            cfg.orientation = 'black';
-          }
-          $scope.board = new ChessBoard('board', cfg);
-        });
+        return 'snapback';
       };
 
       var cfg = {
         position: game.fenstring,
         draggable: true,
-        onDrop: onDrop
-        // onDragStart: onDragStart
+        onDrop: onDrop,
+        onDragStart: onDragStart
       };
 
       if($scope.curUser === game.black){
