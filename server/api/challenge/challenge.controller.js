@@ -45,6 +45,7 @@ exports.show = function(req, res) {
 
 // Creates a new challenge in the DB.
 exports.create = function(req, res) {
+  if (req.body.challenger === req.body.adversary) {return res.send(403)}
   Challenge.create(req.body, function(err, challenge) {
     if(err) { return handleError(res, err); }
     return res.json(201, challenge);
@@ -58,6 +59,21 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!challenge) { return res.send(404); }
     var updated = _.merge(challenge, req.body);
+    updated.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, challenge);
+    });
+  });
+};
+
+// Updates a challenge's status to cancelled
+exports.cancelChallenge = function(req, res) {
+  if(req.body._id) { delete req.body._id; }
+  Challenge.findById(req.params.id, function (err, challenge) {
+    if (err) { return handleError(res, err); }
+    if(!challenge) { return res.send(404); }
+    var status = {status: 'cancelled'};
+    var updated = _.merge(challenge, status);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, challenge);

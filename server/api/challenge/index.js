@@ -11,6 +11,7 @@ router.get('/cancelled', controller.cancelledChallenges);
 router.get('/:id', controller.show);
 router.post('/', controller.create);
 router.put('/:id', controller.update);
+router.put('/cancel/:id', controller.cancelChallenge);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
 

@@ -22,7 +22,7 @@ exports.index = function(req, res) {
 
 /**
  *Get a user by
- *email.
+ *email. Doesn't let you choose yourself.
  */
 exports.getUserByEmail = function(req, res, next) {
   User.findOne({email: req.query.email}, function (err, user) {

@@ -2,7 +2,9 @@
 
 angular.module('3dchessApp')
   .controller('GameCtrl', function ($scope, Auth, $location, $http, socket, $stateParams) {
-
+    if(!Auth.isLoggedIn()){
+      $location.path('/');
+    }
     $scope.gameId = $stateParams.gameId;
     $scope.curUser = Auth.getCurrentUser()._id;
 
@@ -16,18 +18,13 @@ angular.module('3dchessApp')
     });
 
     $scope.buildBoard = function(game){
-      var onDragStart = function(source, piece, position, orientation){
-        //TODO: Validate to make sure the person whose turn
-        //it is is the only person who can play.
-        //This includes validating that people who aren't
-        //members of this game can't play, and that
-        //the black user can't move the white user's pieces.
-        var chess = new Chess(game.fenstring);
+      var chess = new Chess(game.fenstring);
 
+      var onDragStart = function(source, piece){
         if(chess.game_over() ||
           (game.black !== $scope.curUser && game.white !== $scope.curUser) ||
           (chess.turn() === 'w' && piece.search(/^b/) !== -1) ||
-          (chess.turn() === 'b' && piece.search(/^w/) !== -1) || 
+          (chess.turn() === 'b' && piece.search(/^w/) !== -1) ||
           (chess.turn() === 'w' && game.black === $scope.curUser) ||
           (chess.turn() === 'b' && game.white === $scope.curUser)){
           return false;
@@ -38,8 +35,35 @@ angular.module('3dchessApp')
         $http.put('/api/games/' + $scope.gameId, {source: source, target: target})
         .catch(function(err){
           console.log('Something went wrong: ', err);
-        })
+        });
         return 'snapback';
+      };
+
+      var updateStatus = function() {
+        var status = '';
+
+        var moveColor = 'White';
+        if (chess.turn() === 'b') {
+          moveColor = 'Black';
+        }
+
+        // checkmate?
+        if (chess.in_checkmate() === true) {
+          status = 'Game over, ' + moveColor + ' is in checkmate.';
+        }
+        // draw?
+        else if (chess.in_draw() === true) {
+          status = 'Game over, drawn position';
+        }
+        // game still on
+        else {
+          status = moveColor + ' to move';
+          // check?
+          if (chess.in_check() === true) {
+            status += ', ' + moveColor + ' is in check';
+          }
+        }
+        $scope.status = status;
       };
 
       var cfg = {
@@ -53,6 +77,7 @@ angular.module('3dchessApp')
         cfg.orientation = 'black';
       }
 
+      updateStatus();
       $scope.board = new ChessBoard('board', cfg);
     };
   });
