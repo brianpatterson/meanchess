@@ -44,7 +44,6 @@ angular.module('3dchessApp')
     //Lists current games
     //TODO:
     //Needs to delete/hide the game when you finish
-    //Also needs to display your opponent's name
     $scope.myGames = [];
     $scope.getMyGames = function(){
       $http.get('/api/games/me',{
