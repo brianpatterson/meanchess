@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('3dchessApp')
+angular.module('meanChessApp')
   .factory('Modal', function ($rootScope, $modal) {
     /**
      * Opens a modal

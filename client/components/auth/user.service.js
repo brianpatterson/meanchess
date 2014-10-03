@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('3dchessApp')
+angular.module('meanChessApp')
   .factory('User', function ($resource) {
     return $resource('/api/users/:id/:controller', {
       id: '@_id'

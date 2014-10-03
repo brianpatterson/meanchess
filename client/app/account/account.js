@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('3dchessApp')
+angular.module('meanChessApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('login', {

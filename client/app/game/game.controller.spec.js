@@ -3,7 +3,7 @@
 describe('Controller: GameCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('3dchessApp'));
+  beforeEach(module('meanChessApp'));
 
   var GameCtrl, scope;
 

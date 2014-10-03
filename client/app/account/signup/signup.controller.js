@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('3dchessApp')
+angular.module('meanChessApp')
   .controller('SignupCtrl', function ($scope, Auth, $location) {
     $scope.user = {};
     $scope.errors = {};

@@ -1,5 +1,5 @@
 {
-  "name": "3dchess",
+  "name": "meanChess",
   "version": "0.0.0",
   "main": "server/app.js",
   "dependencies": {

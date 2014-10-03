@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('3dchessApp')
+angular.module('meanChessApp')
   .controller('UserCtrl', function ($scope, Auth, $location, $http, socket) {
     if(!Auth.isLoggedIn()){
       $location.path('/');

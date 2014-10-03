@@ -7,7 +7,7 @@
 
 module.exports = {
   DOMAIN:           'http://localhost:9000',
-  SESSION_SECRET:   '3dchess-secret',
+  SESSION_SECRET:   'meanChess-secret',
 
   // Control debug level for modules using visionmedia/debug
   DEBUG: ''

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('3dchessApp', [
+angular.module('meanChessApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
