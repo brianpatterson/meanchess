@@ -2,6 +2,7 @@
 
 var path = require('path');
 
+// console.log('HEYYY!!!', path.normalize(__dirname + '/../../../dist'));
 // Production specific configuration
 // =================================
 module.exports = {
@@ -23,5 +24,5 @@ module.exports = {
             'mongodb://localhost/meanChess'
   },
 
-  root:  path.normalize(__dirname + '/../../../dist')
+  root: path.normalize(__dirname + '/../../../')
 };
