@@ -10,7 +10,7 @@
         {{cancelledChallenge.adversary.name}} cancelled your request.
       </td>
       <td>
-        <button type="button" class="close" ng-click="deleteChallenge(cancelledChallenge)">&times;</button>
+        <button type="button" class="close" ng-click="challengeService.deleteChallenge(cancelledChallenge)">&times;</button>
       </td>
     </tr>
   </table>
@@ -24,17 +24,17 @@
         {{newChallenge.challenger.name}} wants to play!
       </td>
       <td>
-        <button type="button" ng-click="createGame(curUser,newChallenge.challenger._id, newChallenge)">
+        <button type="button" ng-click="gameService.createGame(curUser,newChallenge.challenger._id, newChallenge)">
           white
         </button>
       </td>
       <td>
-        <button type="button" ng-click="createGame(newChallenge.challenger._id, curUser, newChallenge)">
+        <button type="button" ng-click="gameService.createGame(newChallenge.challenger._id, curUser, newChallenge)">
           black
         </button>
       </td>
       <td>
-        <button type="button" class="close" ng-click="cancelChallenge(newChallenge)">&times;</button>
+        <button type="button" class="close" ng-click="challengeService.cancelChallenge(newChallenge)">&times;</button>
       </td>
     </tr>
   </table>
@@ -57,7 +57,7 @@
         </button>
       </td>
       <td>
-        <button type="button" class="close" ng-click="deleteGame(game)">&times;</button>
+        <button type="button" class="close" ng-click="gameService.deleteGame(game)">&times;</button>
       </td>
     </tr>
   </table>

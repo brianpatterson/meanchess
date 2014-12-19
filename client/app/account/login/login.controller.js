@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('meanChessApp')
-  .controller('LoginCtrl', function ($scope, Auth, $location) {
+  .controller('LoginCtrl', function ($scope, $state, Auth) {
     $scope.user = {};
     $scope.errors = {};
 
@@ -15,7 +15,7 @@ angular.module('meanChessApp')
         })
         .then( function() {
           // Logged in, redirect to home
-          $location.path('/user');
+          $state.go('user');
         })
         .catch( function(err) {
           $scope.errors.other = err.message;

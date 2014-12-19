@@ -8,6 +8,20 @@ angular.module('meanChessApp')
     $scope.gameId = $stateParams.gameId;
     $scope.curUser = Auth.getCurrentUser()._id;
 
+    //Keeping comment for when I have time to get this refactor to actually work
+
+    // gameService.getActiveGame($scope.gameId, function (cfg, game) {
+    //   $scope.board = new ChessBoard('board', cfg);
+    //   $scope.status = gameService.updateStatus(game);
+    //   socket.syncModelUpdates('game', $scope, function (game) {
+    //     gameService.buildBoard(game, function (cfg) {
+    //       $scope.board = new ChessBoard('board', cfg);
+    //       $scope.status = gameService.updateStatus(game);
+    //     });
+    //   });
+    // });
+
+
     $http.get('/api/games/' + $scope.gameId)
     .success(function(game) {
       $scope.game = game;
@@ -18,6 +32,7 @@ angular.module('meanChessApp')
     });
 
     $scope.buildBoard = function(game){
+
       var chess = new Chess(game.fenstring);
 
       var onDragStart = function(source, piece){
