@@ -43,70 +43,68 @@ angular.module('meanChessApp')
       $http.delete('/api/games/' + game._id);
     };
 
-    //Keeping comment for when I can actually get this refactor to work
+    this.buildBoard = function(game, callback){
+      var chess = new Chess(game.fenstring);
 
-    // this.buildBoard = function(game, callback){
-    //   var chess = new Chess(game.fenstring);
+      var onDragStart = function(source, piece){
+        if(chess.game_over() ||
+          (game.black !== curUser && game.white !== curUser) ||
+          (chess.turn() === 'w' && piece.search(/^b/) !== -1) ||
+          (chess.turn() === 'b' && piece.search(/^w/) !== -1) ||
+          (chess.turn() === 'w' && game.black === curUser) ||
+          (chess.turn() === 'b' && game.white === curUser)){
+          return false;
+        }
+      };
 
-    //   var onDragStart = function(source, piece){
-    //     if(chess.game_over() ||
-    //       (game.black !== curUser && game.white !== curUser) ||
-    //       (chess.turn() === 'w' && piece.search(/^b/) !== -1) ||
-    //       (chess.turn() === 'b' && piece.search(/^w/) !== -1) ||
-    //       (chess.turn() === 'w' && game.black === curUser) ||
-    //       (chess.turn() === 'b' && game.white === curUser)){
-    //       return false;
-    //     }
-    //   };
-
-    //   var onDrop = function(source, target){
-    //     $http.put('/api/games/' + game._id, {source: source, target: target})
-    //     .catch(function(err){
-    //       console.log('Something went wrong: ', err);
-    //     });
-    //     return 'snapback';
-    //   };
+      var onDrop = function(source, target){
+        $http.put('/api/games/' + game._id, {source: source, target: target})
+        .catch(function(err){
+          console.log('Something went wrong: ', err);
+        });
+        return 'snapback';
+      };
 
 
-    //   var cfg = {
-    //     position: game.fenstring,
-    //     draggable: true,
-    //     onDrop: onDrop,
-    //     onDragStart: onDragStart
-    //   };
+      var cfg = {
+        position: game.fenstring,
+        draggable: true,
+        onDrop: onDrop,
+        onDragStart: onDragStart
+      };
 
-    //   if(curUser === game.black){
-    //     cfg.orientation = 'black';
-    //   }
+      if(curUser === game.black){
+        cfg.orientation = 'black';
+      }
 
-    //   callback(cfg);
-    // };
+      callback(cfg);
+    };
 
-    // this.updateStatus = function(game) {
-    //   var chess = new Chess(game.fenstring);
-    //   var status = '';
+    this.updateStatus = function(game) {
+      var chess = new Chess(game.fenstring);
+      var status = '';
 
-    //   var moveColor = 'White';
-    //   if (chess.turn() === 'b') {
-    //     moveColor = 'Black';
-    //   }
+      var moveColor = 'White';
+      if (chess.turn() === 'b') {
+        moveColor = 'Black';
+      }
 
-    //   // checkmate?
-    //   if (chess.in_checkmate() === true) {
-    //     status = 'Game over, ' + moveColor + ' is in checkmate.';
-    //   }
-    //   // draw?
-    //   else if (chess.in_draw() === true) {
-    //     status = 'Game over, drawn position';
-    //   }
-    //   // game still on
-    //   else {
-    //     status = moveColor + ' to move';
-    //     // check?
-    //     if (chess.in_check() === true) {
-    //       status += ', ' + moveColor + ' is in check';
-    //     }
-    //   }
-    //   return status;
-    // };
+      // checkmate?
+      if (chess.in_checkmate() === true) {
+        status = 'Game over, ' + moveColor + ' is in checkmate.';
+      }
+      // draw?
+      else if (chess.in_draw() === true) {
+        status = 'Game over, drawn position';
+      }
+      // game still on
+      else {
+        status = moveColor + ' to move';
+        // check?
+        if (chess.in_check() === true) {
+          status += ', ' + moveColor + ' is in check';
+        }
+      }
+      return status;
+    };
   });
